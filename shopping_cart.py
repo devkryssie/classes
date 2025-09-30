@@ -1,27 +1,27 @@
 class shoppingcart:
-    prices = {}
-    cart = {}
-    def setup_cart(prices):
-        shoppingcart.prices = prices
-        shoppingcart.cart = {}
-    def add_item(self, item , quantity=1):
-        if item in shoppingcart.prices:
-            shopping.cart[item] = shopping.cart.get(item, 0) + quantity
+    def __init__(self):
+        self.items = {}
+    def add_item(self, item , price, quantity=1):
+        if item in self.items:
+            self.items[item]["quantity"] += quantity
+        else:
+            self.items[item] = {"price": price, "quantity": quantity}
     def remove_item(self, item, quantity=1):
-        if item in self.cart:
-            self.cart[item] -= quantity
-            if self.cart[item] <= 0:
-                del shopping.cart[item]
-    def clear_cart():
-        shoppingcart.cart.clear()
-    def calculate_total():
+        if item in self.items:
+            if self.items[item]["quantity"] > quantity:
+                self.items[item]["quantity"] -= quantity
+            else:
+                del self.items[item]
+    def clear_cart(self):
+        self.items.clear()
+    def calculate_total(self):
         total = 0
-        for item, quantity in shoppingcart.cart.items():
-            total += shoppingcart.prices[item] * quantity
+        for details in self.items.values():
+            total += details["price"] * details["quantity"]
         return total
-prices = {"shirt": 5000, "shoes": 12000}
-shoppingcart.setup_cart(prices)
-shoppingcart.add_item("shirt", 2)
-print(shoppingcart.calculate_total())
-shoppingcart.remove_item("shirt", 1)
-print(shoppingcart.calculate_total())
+cart = shoppingcart()
+cart.add_item("shirt", 200, 3)
+cart.add_item("apple", 100, 2)
+print("total =", cart.calculate_total())
+
+

@@ -1,12 +1,12 @@
 import random
 class bankAccount:
-    def __init__(self, account_name, amount, isadmin= False, haspromo=False, promoprize=1000):
-        self.account_number = random.randint(1655211, 9078399)
+    def __init__(self, account_name:str, amount:float, isfreeze:bool = False, haspromo:bool=False, promoprize:int=1000):
+        self.account_number = random.randint(1000000000, 9999999999)
         self.account_name = account_name
         self.haspromo = haspromo
         self.promoprize = promoprize
         self.amount = amount
-        self.isadmin = False
+        self.isfreeze = False
         if self.haspromo:
            self.amount += self.promoprize
            print(f"account number: {self.account_number}")
@@ -18,8 +18,8 @@ class bankAccount:
             print(f"no promo available. amount: {self.amount}")
             self.send_sms(f"account created with amount {self.amount}")
             self.send_email(f"acc creation", f"account created with {self.amount}")
-    def deposit(self, deposit_amount):
-        if self.isadmin:
+    def deposit(self, deposit_amount:float):
+        if self.isfreeze:
             print("account is frozen cant perform transaction")
             return
         if deposit_amount > 0:
@@ -30,8 +30,8 @@ class bankAccount:
         else:
             self.send_sms(f"deposited failed invalid amt")
             self.send_sms(f"deposited failed invalid amt {deposit_amount}")
-    def withdraw(self, amount):
-        if self.isadmin:
+    def withdraw(self, amount:int):
+        if self.isfreeze:
             print("account frozen cant perform withdrawal")
             return
         if amount <= self.amount:
@@ -42,7 +42,7 @@ class bankAccount:
         else:
              print("insufficient ego")
     def transfer(self, amount, receiver):
-        if self.isadmin:
+        if self.isfreeze:
             print("account is frozen cannot perform any transaction")
         if 0 <  amount <= self.amount:
             self.amount -= amount
@@ -50,17 +50,14 @@ class bankAccount:
             self.send_sms(f"account debited with {amount} new {self.amount}")
             self.send_email("transferd failed")
     def freeze_acc(self):
-        self.isadmin = True
+        self.isfreeze = True
         print(f"account {self.account_number} frozen")
     def unfreeze_acc(self):
-        self.isadmin = False
+        self.isfreeze = False
         print(f"account {self.account_number} unfrozen")
     def send_sms(self, message):
         print(f"sms: {message}")
     def send_email(self, subject, message):
         print(f"email subject: {subject}")
         print(f"email body: {message}")
-account1 = bankAccount("johns account", 1000)
-account1.deposit(500)
-account1.withdraw(200)
 
